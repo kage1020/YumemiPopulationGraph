@@ -1,7 +1,7 @@
 import { PopulationWithRate, PopulationWithoutRate, Prefecture } from "./data"
 
 export type ResponseError = {
-  message: string
+  message: string | null
 }
 
 export type ResponsePrefectures = {
