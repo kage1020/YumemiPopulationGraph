@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss"
 
+import { COLORS } from "./src/utils/chart"
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -15,6 +17,16 @@ export default {
           "75%": { transform: "rotateZ(0deg)" },
           "100%": { transform: "rotateX(0deg)" },
         },
+      },
+      colors: {
+        red: COLORS.red.hex,
+        green: COLORS.green.hex,
+        blue: COLORS.blue.hex,
+        sky: COLORS.sky.hex,
+        pink: COLORS.pink.hex,
+        orange: COLORS.orange.hex,
+        purple: COLORS.purple.hex,
+        brown: COLORS.brown.hex,
       },
     },
   },
