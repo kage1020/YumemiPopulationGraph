@@ -16,10 +16,8 @@ export const fetchPrefectures = async (): Promise<Prefecture[]> => {
           },
         },
       )
-      .then((res) => {
-        if (res.status === 200) return res.data.result
-        else return []
-      }),
+      .then((res) => res.data.result)
+      .catch(() => []),
   )
 }
 
@@ -37,18 +35,17 @@ export const fetchPopulation = async (
         },
       )
       .then((res) => {
-        if (res.status === 200) {
-          return {
-            prefName: prefecture.prefName,
-            boundaryYear: res.data.result.boundaryYear,
-            data: res.data.result.data,
-          }
-        } else {
-          return {
-            prefName: prefecture.prefName,
-            boundaryYear: 0,
-            data: [],
-          }
+        return {
+          prefName: prefecture.prefName,
+          boundaryYear: res.data.result.boundaryYear,
+          data: res.data.result.data,
+        }
+      })
+      .catch(() => {
+        return {
+          prefName: prefecture.prefName,
+          boundaryYear: 0,
+          data: [],
         }
       }),
   )

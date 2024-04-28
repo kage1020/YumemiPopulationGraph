@@ -1,6 +1,6 @@
-import type { PointStyle } from "chart.js"
+import type { ChartData, ChartOptions, PointStyle } from "chart.js"
 
-import type { Color } from "@/types/data"
+import type { Color, LineData, Population } from "@/types/data"
 
 // カラーユニバーサルデザインより配色を決定
 // https://jfly.uni-koeln.de/colorset/CUD_color_set_GuideBook_2018.pdf
@@ -82,4 +82,59 @@ export const getMarker = (index: number) => {
   return MARKER[
     Math.floor(index / Object.values(colors).length) % MARKER.length
   ]
+}
+
+export function createChartData(data: LineData) {
+  return {
+    labels: data.labels,
+    datasets: data.data.map((d, i) => {
+      const color = getColor(i).hex
+      const marker = getMarker(i)
+      return {
+        label: d.prefName,
+        data: d.data.data.map((v) => v.value),
+        pointBorderWidth: 2,
+        pointRadius: 6,
+        pointHoverBorderWidth: 4,
+        pointHoverRadius: 8,
+        borderColor: color,
+        backgroundColor: color,
+        pointStyle: marker,
+        pointBackgroundColor: color,
+      }
+    }),
+  } satisfies ChartData<"line">
+}
+
+export function createChartOptions() {
+  return {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  } satisfies ChartOptions<"line">
+}
+
+export function makeLineData(populations: Population[], layer: string) {
+  // すべての都道府県から値として取り得る年のリストを作成
+  const labels = populations
+    .flatMap((d) => d.data.find((d) => d.label === layer)!.data) // layerに一致する47個の人口データを取得
+    .map((v) => v.year) // 年のみを取得
+    .filter((v, i, self) => self.indexOf(v) === i) // 重複を削除
+    .sort((a, b) => a - b) // 昇順にソート
+    .map(String)
+  // すべての都道府県のデータを年ごとにまとめる
+  const data = populations.map((pop) => ({
+    prefName: pop.prefName,
+    boundaryYear: pop.boundaryYear,
+    data: pop.data.find((d) => d.label === layer)!,
+  }))
+
+  return { labels, data }
+}
+
+export function getLayerOptions(populations: Population[]) {
+  return populations[0].data.map((d) => d.label)
 }
