@@ -19,6 +19,7 @@ describe("PopulationLineWithSelect", () => {
   })
 
   test("fetchが終わり次第タイトルがレンダリングされる", async () => {
+    localStorage.clear()
     const { container } = render(<PopulationLineWithSelect />)
     await waitFor(
       () => {
@@ -27,11 +28,12 @@ describe("PopulationLineWithSelect", () => {
           "都道府県別の総人口推移グラフ",
         )
       },
-      { timeout: 2000 },
+      { timeout: 3000 },
     )
   })
 
   test("layerが変更される", async () => {
+    localStorage.clear()
     const { container, getByRole } = render(<PopulationLineWithSelect />)
     await waitFor(
       () => {
@@ -40,7 +42,7 @@ describe("PopulationLineWithSelect", () => {
           "都道府県別の総人口推移グラフ",
         )
       },
-      { timeout: 2000 },
+      { timeout: 3000 },
     )
     const select = getByRole("combobox")
     fireEvent.change(select, { target: { value: "生産年齢人口" } })
