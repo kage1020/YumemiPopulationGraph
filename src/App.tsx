@@ -1,6 +1,10 @@
+import { PopulationLineWithSelect } from "@/components/PopulationLineWithSelect"
+
 function App() {
   return (
-    <main className="min-h-screen grid place-items-center">Hello World</main>
+    <main className="grid min-h-screen place-items-center p-4 md:p-8">
+      <PopulationLineWithSelect />
+    </main>
   )
 }
 
